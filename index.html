@@ -1,55 +1,67 @@
 <html>
 <head>
 	<title>COP 4331 LAMP Stack Demo</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/slider.css" rel="stylesheet">	
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 </head>
-<body class="body">
+<body class="body bg">
 
     <!-- container div -->
     <div class="container">
- 
+        
         <!-- upper button section to select
              the login or signup form -->
+             
         <div class="slider"></div>
         <div class="btn">
             <button class="login">Login</button>
             <button class="signup">Signup</button>
         </div>
+        <h1 id="title">Welcome to Contact Manager</h1>
  
         <!-- Form section that contains the
              login and the signup form -->
         <div class="form-section">
+            
  
             <!-- login form -->
             <div class="login-box">
                 <input type="text"
+                       id="loginName"
                        class="ele"
                        placeholder="username">
                 <input type="password"
+                       id="loginPassword"
                        class="password ele"
                        placeholder="password">
-                <button class="clkbtn">Login</button>
+                <button class="clkbtn" onclick="doLogin();">Login</button>
+                <span id="loginResult"></span>
             </div>
  
             <!-- signup form -->
             <div class="signup-box">
                 <input type="text"
-                       class="name ele"
+                       class="ele"
+                       id="registerFirstName"
                        placeholder="firstname">
                 <input type="text"
                        class="ele"
+                       id="registerLastName"
                        placeholder="lastname">
+                <input type="text"
+                       class="ele"
+                       id="registerLogin"
+                       placeholder="username">
                 <input type="password"
                        class="password ele"
+                       id="registerPassword"
                        placeholder="password">
-                <input type="password"
-                       class="password ele"
-                       placeholder="confirm password">
-                <button class="clkbtn">Signup</button>
+                <button class="clkbtn" onclick="doRegister();">Signup</button>
+                <span id="registerResult"></span>
             </div>
         </div>
     </div>

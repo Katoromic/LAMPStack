@@ -1,7 +1,14 @@
-body 
+.body
 {
-    background-image: url("../images/shark-15.jpg");
     background-size: cover;
+}
+.bg
+{
+    background-image: url("../images/shark-15-old.jpg");
+}
+.new-bg
+{
+    background-image: url("../images/shark-14.jpg");
 }
 
 .grad {
