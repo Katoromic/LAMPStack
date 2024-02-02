@@ -132,6 +132,10 @@ header {
 	font-size: 18px;
 }
 
+.required {
+	border: #ff0000 solid 5px;
+}
+
 .clkbtn {
 	height: 60px;
 	width: 150px;

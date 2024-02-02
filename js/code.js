@@ -62,6 +62,132 @@ function doLogin()
 
 }
 
+function doLogout()
+{
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	window.location.href = "index.html";
+}
+
+function addContact()
+{
+	let firstName = document.getElementById("contactFirst").value;
+	let lastName = document.getElementById("contactLast").value;
+	let phone = document.getElementById("contactPhone").value;
+	let email = document.getElementById("contactEmail").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {firstName:firstName,lastName:lastName,phone:phone,email:email,userId:userId};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/AddColor.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("colorAddResult").innerHTML = "Color has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("colorAddResult").innerHTML = err.message;
+	}
+	
+}
+
+function doRegister()
+{
+	// reset required red borders
+	document.getElementById("registerFirstName").className = "ele";
+	document.getElementById("registerLastName").className = "ele";
+	document.getElementById("registerLogin").className = "ele";
+	document.getElementById("registerPassword").className = "ele";
+	
+	// collect values from form
+	let firstName = document.getElementById("registerFirstName").value;
+	let lastName = document.getElementById("registerLastName").value;
+	let login = document.getElementById("registerLogin").value;
+	let password = document.getElementById("registerPassword").value;
+
+	if (firstName === "")
+	{
+		document.getElementById("registerFirstName").className = "ele required";
+		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
+		return;
+	}
+	if (lastName === "")
+	{
+		document.getElementById("registerLastName").className = "ele required";
+		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
+		return;
+	}
+	if (login === "")
+	{
+		document.getElementById("registerLogin").className = "ele required";
+		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
+		return;
+	}
+	if (password === "")
+	{
+		document.getElementById("registerPassword").className = "ele required";
+		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
+		return;
+	}
+	
+
+	// resets fields
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.getElementById("registerResult").innerHTML = "";
+
+	// create json payload
+	let tmp = {login:login,password:password,firstName:firstName,lastName:lastName};
+	let jsonPayload = JSON.stringify( tmp );
+	console.log("jsonPayload= " + jsonPayload);
+	
+	let url = 'http://' + urlBase + '/LAMPAPI/Register.' + extension;
+
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				let jsonObject = JSON.parse( xhr.responseText );
+				userId = jsonObject.id;
+		
+				if( userId < 1 )
+				{
+					let error = jsonObject.error;
+					document.getElementById("loginResult").innerHTML = err;
+					return;
+				}
+	
+				window.location.reload();
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
+}
+
 function saveCookie()
 {
 	let minutes = 20;
@@ -103,14 +229,6 @@ function readCookie()
 	}
 }
 
-function doLogout()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
-}
 
 function addContact()
 {
