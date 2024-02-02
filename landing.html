@@ -1,16 +1,69 @@
-<html>
-<head>
-	<title>COP 4331 LAMP Stack Demo</title>
-	<script type="text/javascript" src="js/md5.js"></script>
-	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-</head>
-<body class="body">
+<!DOCTYPE html>
+<html lang="en">
 
-	<div id="loginDiv">
-        <p>test landing page</p>
-		<button class="clkbtn" onclick="doLogout();">Logout</button>
-	</div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, 
+						initial-scale=1.0" />
+    <title>Landing</title>
+    <link rel="stylesheet" href="/LAMPStack-front-end/css/landingStyles.css" />
+</head>
+
+<body>
+    
+    
+    <!-- container div -->
+    <div class="container">
+        
+        <div class="logout-button">
+            <button class="buttons" id="logout">Logout</button>
+        </div>
+        <header>
+            <h1 class="heading">Welcome</h1>
+            <h3 class="title">Modify Contacts or Color</h3>
+            
+            
+                
+ 
+        </header>
+
+        <!-- upper button section to select
+			the contacts or color form -->
+        <div class="slider"></div>
+        <div class="btn">
+            <button class="contacts">Contacts</button>
+            <button class="color">Color</button>
+        </div>
+
+        <!-- Form section that contains the
+			color and the contacts form -->
+        <div class="form-section">
+            <!-- contacts form -->
+            <div class="contacts-box">
+                <input type="text" class="name ele" placeholder="Enter first name" />
+                <input type="text" class="name ele" placeholder="Enter last name" />
+                <input type="text" class="email ele" placeholder="Enter email" />
+                <input type="text" class="password ele" placeholder="Enter phone number" />
+                <div class="button-container">
+                    <button class="buttons" id="addContacts">Add</button>
+                    <button class="buttons" id="searchContacts">Search</button>
+                    <button class="buttons" id="deleteContacts">Delete</button>
+                </div>
+            </div>
+
+            <!-- color form -->
+            <div class="color-box">
+                <input type="text" class="color ele" placeholder="Enter color" />
+                <div class="button-container">
+                    <button class="buttons" id="addColor">Add</button>
+                    <button class="buttons" id="searchColor">Seach</button>
+                    <button class="buttons" id="deleteColor">Delete</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="js/landing.js"></script>
 </body>
+
 </html>

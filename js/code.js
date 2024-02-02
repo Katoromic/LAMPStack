@@ -62,6 +62,49 @@ function doLogin()
 
 }
 
+function doLogout()
+{
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	window.location.href = "index.html";
+}
+
+function addContact()
+{
+	let firstName = document.getElementById("contactFirst").value;
+	let lastName = document.getElementById("contactLast").value;
+	let phone = document.getElementById("contactPhone").value;
+	let email = document.getElementById("contactEmail").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {firstName:firstName,lastName:lastName,phone:phone,email:email,userId:userId};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/AddColor.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("colorAddResult").innerHTML = "Color has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("colorAddResult").innerHTML = err.message;
+	}
+	
+}
+
 function doRegister()
 {
 	// reset required red borders
@@ -186,14 +229,6 @@ function readCookie()
 	}
 }
 
-function doLogout()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
-}
 
 function addContact()
 {
