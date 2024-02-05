@@ -6,65 +6,68 @@
     <meta name="viewport" content="width=device-width, 
 						initial-scale=1.0" />
     <title>Landing</title>
-	<link href="css/landingStyles.css" rel="stylesheet">
+    <link href="css/landingStyles.css" rel="stylesheet">
     <script type="text/javascript" src="js/code.js"></script>
 </head>
 
 <body>
+    <h1 class="heading">Welcome</h1>
     
+    <div class="topnav">
+        <a class="active" href="#home">Contacts</a>
+        <a href="#about">About</a>
+        <a href="#news">News</a>
+        <a href="#logout">Logout</a>
+    </div>
+    <div class = "overlay">
     
     <!-- container div -->
-    <div class="container">
-        
-        <div class="logout-button">
-            <button class="buttons" id="logout">Logout</button>
-        </div>
-        <header>
-            <h1 class="heading">Welcome</h1>
-            <h3 class="title">Modify Contacts or Color</h3>
-            
-            
-                
- 
-        </header>
 
-        <!-- upper button section to select
+        <div class="container">
+
+
+            <header>
+                <h3 class="title">Contacts</h3>
+            </header>
+
+            <!-- upper button section to select
 			the contacts or color form -->
-        <div class="slider"></div>
-        <div class="btn">
-            <button class="contacts">Contacts</button>
-            <button class="color">Color</button>
-        </div>
+            <div class="slider"></div>
+            <div class="btn">
+                <button class="color">View</button>
+                <button class="contacts">Modify</button>
+            </div>
 
-        <!-- Form section that contains the
+            <!-- Form section that contains the
 			color and the contacts form -->
-        <div class="form-section">
-            <!-- contacts form -->
-            <div class="contacts-box">
-                <input type="text" class="ele" id="contactFirst" placeholder="Enter first name" />
-                <input type="text" class="ele" id="contactLast" placeholder="Enter last name" />
-                <input type="text" class="ele" id="contactPhone" placeholder="Enter phone number" />
-                <input type="text" class="ele" id="contactEmail" placeholder="Enter email" />
-                <div class="button-container">
-                    <button class="buttons" onclick="addContact()"">Add</button>
-                    <button class="buttons" >Search</button>
-                    <button class="buttons" >Delete</button>
-                    <span id="contactAddResult"></span>
+            <div class="form-section">
+                <!-- color form -->
+                <div class="color-box">
+
+                    <div class="view-container">
+
+                    </div>
                 </div>
+                <!-- contacts form -->
+                <div class="contacts-box">
+                    <input type="text" class="ele" id="contactFirst" placeholder="Enter first name" />
+                    <input type="text" class="ele" id="contactLast" placeholder="Enter last name" />
+                    <input type="text" class="ele" id="contactPhone" placeholder="Enter phone number" />
+                    <input type="text" class="ele" id="contactEmail" placeholder="Enter email" />
+                    <div class="button-container">
+                        <button class="buttons" onclick="addContact()"">Add</button>
+                    <button class=" buttons">Search</button>
+                        <button class="buttons">Delete</button>
+                        <span id="contactAddResult"></span>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- color form -->
-            <div class="color-box">
-                <input type="text" class="color ele" placeholder="Enter color" />
-                <div class="button-container">
-                    <button class="buttons" id="addColor">Add</button>
-                    <button class="buttons" id="searchColor">Seach</button>
-                    <button class="buttons" id="deleteColor">Delete</button>
-                </div>
-            </div>
         </div>
-        
     </div>
+
+
     <script src="js/landing.js"></script>
 </body>
 
