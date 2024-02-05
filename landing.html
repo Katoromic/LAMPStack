@@ -7,6 +7,7 @@
 						initial-scale=1.0" />
     <title>Landing</title>
 	<link href="css/landingStyles.css" rel="stylesheet">
+    <script type="text/javascript" src="js/code.js"></script>
 </head>
 
 <body>
@@ -40,14 +41,15 @@
         <div class="form-section">
             <!-- contacts form -->
             <div class="contacts-box">
-                <input type="text" class="name ele" placeholder="Enter first name" />
-                <input type="text" class="name ele" placeholder="Enter last name" />
-                <input type="text" class="email ele" placeholder="Enter email" />
-                <input type="text" class="password ele" placeholder="Enter phone number" />
+                <input type="text" class="ele" id="contactFirst" placeholder="Enter first name" />
+                <input type="text" class="ele" id="contactLast" placeholder="Enter last name" />
+                <input type="text" class="ele" id="contactPhone" placeholder="Enter phone number" />
+                <input type="text" class="ele" id="contactEmail" placeholder="Enter email" />
                 <div class="button-container">
-                    <button class="buttons" id="addContacts">Add</button>
-                    <button class="buttons" id="searchContacts">Search</button>
-                    <button class="buttons" id="deleteContacts">Delete</button>
+                    <button class="buttons" onclick="addContact()"">Add</button>
+                    <button class="buttons" >Search</button>
+                    <button class="buttons" >Delete</button>
+                    <span id="contactAddResult"></span>
                 </div>
             </div>
 
