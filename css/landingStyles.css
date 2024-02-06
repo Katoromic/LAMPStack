@@ -77,7 +77,7 @@ header {
 .contacts,
 .color {
 	font-size: 20px;
-	margin-left: -15px;
+	margin-left: -20px;
 	border: none;
 	outline: none;
 	background-color: transparent;
@@ -129,12 +129,12 @@ header {
 
 .color-box {
 	gap: 50px;
-	margin-left: 500px;
+	margin-left: 250px;
 }
 
 .contacts-box {
 	gap: 30px;
-	margin-left: 250px;
+	margin-left: 500px;
 }
 
 .ele {
