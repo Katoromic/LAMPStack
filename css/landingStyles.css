@@ -1,77 +1,122 @@
-@import url(
-"https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
 
-	height: 100vh;
-	width: 100vw;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	gap: 30px;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
     background-image: url("../images/shark-15-old.jpg");
     background-size: cover;
-	font-family: 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.overlay {
+    margin-top: -30px;
+	margin-bottom: -30px;
+    width: 100%;
+    padding-left: 15%;
+    background-color: #06255f80;
+}
+
+/* Navigation bar */
+.topnav {
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Ubuntu', sans-serif;
+    margin-top: -20px;
+    padding-left: 25%;
+    background-color: #06255f80;
+    border-top: #ffffff solid 5px;
+    border-bottom: #ffffff solid 5px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #ffffff;
+    text-align: center;
+    padding: 16px 60px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: #ddd;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-image: linear-gradient(to right,
+            rgb(193, 225, 238),
+            rgb(91, 143, 255));
+    color: white;
 }
 
 .grad {
     background-image: radial-gradient(rgb(17, 74, 128), #040133);
 }
 
+
+
 header {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	margin-top: -30px;
-	margin-bottom: 5%;
-	color: #ffffff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4vh;
+    margin-bottom: 0%;
+    color: #ffffff;
 
 }
 
 .heading {
-	font-size: 40px;
-	letter-spacing: 1.5px;
-	font-family: 'Ubuntu', sans-serif;
+    font-size: 3em;
+    letter-spacing: 1.5px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #ffffff;
+    margin-top: 20px;
 }
 
 .title {
-	font-size: 0.8em;
-	letter-spacing: 1.5px;
-	font-family: 'Ubuntu', sans-serif;
-	color: #ffffff;
-	
+    font-size: 1.5em;
+    letter-spacing: 1.5px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #ffffff;
+
 }
 
+
 .container {
-	height: 760px;
-	width: 1000px;
-	background-color: #06255f80;
-	border: #ffffff solid 5px;
-    border-radius: 5%;
-	position: relative;
-	overflow: hidden;
+	margin-top: 2vh;;
+    width: 1000px;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn {
-	height: 60px;
-	width: 300px;
-	margin: 15px auto;
-	border: #ffffff solid 5px;
-	border-radius: 50px;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
+    height: 60px;
+    width: 300px;
+    margin: 2.95vh auto;
+    border: #ffffff solid 5px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .contacts,
@@ -86,45 +131,45 @@ header {
 }
 
 .slider {
-	height: 60px;
-	width: 150px;
-	border-radius: 50px;
-	background-image: linear-gradient(to right,
-			rgb(193, 225, 238),
-			rgb(91, 143, 255));
-	position: absolute;
-	top: 161px;
-	left: 345px;
-	transition: all 0.5s ease-in-out;
+    height: 60px;
+    width: 150px;
+    border-radius: 50px;
+    background-image: linear-gradient(to right,
+            rgb(193, 225, 238),
+            rgb(91, 143, 255));
+    position: absolute;
+    top: 10vh;
+    left: 345px;
+    transition: all 0.5s ease-in-out;
 }
 
 .moveslider {
-	left: 495px;
+    left: 495px;
 }
 
 .form-section {
-	height: 500px;
-	width: 2000px;
-	padding: 20px 0;
-	display: flex;
-	position: relative;
-	transition: all 0.5s ease-in-out;
-	left: 0px;
+    height: 500px;
+    width: 2000px;
+    display: flex;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    left: 0px;
+    margin-top: -5vh;
 }
 
 .form-section-move {
-	left: -1000px;
+    left: -1000px;
 }
 
 .color-box,
 .contacts-box {
-	height: 100%;
-	width: 500px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 0px 40px;
+    height: 100%;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 40px;
 }
 
 .color-box {
@@ -138,156 +183,158 @@ header {
 }
 
 .ele {
-	height: 60px;
-	width: 400px;
-	outline: none;
-	border: none;
-	color: rgb(77, 77, 77);
-	background-color: rgb(240, 240, 240);
-	border-radius: 50px;
-	padding-left: 30px;
-	font-size: 18px;
+    height: 60px;
+    width: 400px;
+    outline: none;
+    border: none;
+    color: rgb(77, 77, 77);
+    background-color: rgb(240, 240, 240);
+    border-radius: 50px;
+    padding-left: 30px;
+    font-size: 18px;
 }
+
 .button-container {
     align-items: center;
 }
 
 
 .buttons {
-	height: 60px;
-	width: 100px;
-	border-radius: 50px;
-	font-size: 24px;
-	cursor: pointer;
-	margin-right: 15px;
-	font-family: 'Ubuntu', sans-serif;
-	
+    height: 60px;
+    width: 100px;
+    border-radius: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-family: 'Ubuntu', sans-serif;
+
 }
-.logout-button{
-	margin-top: 20px;
-	margin-left: 860px;
+
+.logout-button {
+    margin-top: 20px;
+    margin-left: 860px;
 }
 
 /* For Responsiveness of the page */
 
 @media screen and (max-width: 650px) {
-	.container {
-		height: 600px;
-		width: 300px;
-	}
+    .container {
+        height: 600px;
+        width: 300px;
+    }
 
-	.title {
-		font-size: 15px;
-	}
+    .title {
+        font-size: 15px;
+    }
 
-	.btn {
-		height: 50px;
-		width: 200px;
-		margin: 20px auto;
-	}
+    .btn {
+        height: 50px;
+        width: 200px;
+        margin: 20px auto;
+    }
 
-	.contacts,
-	.color {
-		font-size: 19px;
-	}
+    .contacts,
+    .color {
+        font-size: 19px;
+    }
 
-	.slider {
-		height: 50px;
-		width: 100px;
-		left: 50px;
-	}
+    .slider {
+        height: 50px;
+        width: 100px;
+        left: 50px;
+    }
 
-	.moveslider {
-		left: 150px;
-	}
+    .moveslider {
+        left: 150px;
+    }
 
-	.form-section {
-		height: 500px;
-		width: 600px;
-	}
+    .form-section {
+        height: 500px;
+        width: 600px;
+    }
 
-	.form-section-move {
-		left: -300px;
-	}
+    .form-section-move {
+        left: -300px;
+    }
 
-	.color-box,
-	.contacts-box {
-		height: 100%;
-		width: 300px;
-	}
+    .color-box,
+    .contacts-box {
+        height: 100%;
+        width: 300px;
+    }
 
-	.ele {
-		height: 50px;
-		width: 250px;
-		font-size: 15px;
-	}
+    .ele {
+        height: 50px;
+        width: 250px;
+        font-size: 15px;
+    }
 
-	.clkbtn {
-		height: 50px;
-		width: 130px;
-		font-size: 19px;
-	}
+    .clkbtn {
+        height: 50px;
+        width: 130px;
+        font-size: 19px;
+    }
 }
 
 @media screen and (max-width: 320px) {
-	.container {
-		height: 600px;
-		width: 250px;
-	}
+    .container {
+        height: 600px;
+        width: 250px;
+    }
 
-	.heading {
-		font-size: 30px;
-	}
+    .heading {
+        font-size: 30px;
+    }
 
-	.title {
-		font-size: 10px;
-	}
+    .title {
+        font-size: 10px;
+    }
 
-	.btn {
-		height: 50px;
-		width: 200px;
-		margin: 20px auto;
-	}
+    .btn {
+        height: 50px;
+        width: 200px;
+        margin: 20px auto;
+    }
 
-	.contacts,
-	.color {
-		font-size: 19px;
-	}
+    .contacts,
+    .color {
+        font-size: 19px;
+    }
 
-	.slider {
-		height: 50px;
-		width: 100px;
-		left: 27px;
-	}
+    .slider {
+        height: 50px;
+        width: 100px;
+        left: 27px;
+    }
 
-	.moveslider {
-		left: 127px;
-	}
+    .moveslider {
+        left: 127px;
+    }
 
-	.form-section {
-		height: 500px;
-		width: 500px;
-	}
+    .form-section {
+        height: 500px;
+        width: 500px;
+    }
 
-	.form-section-move {
-		left: -250px;
-	}
+    .form-section-move {
+        left: -250px;
+    }
 
-	.color-box,
-	.contacts-box {
-		height: 100%;
-		width: 250px;
-	}
+    .color-box,
+    .contacts-box {
+        height: 100%;
+        width: 250px;
+    }
 
-	.ele {
-		height: 50px;
-		width: 220px;
-		font-size: 15px;
-	}
+    .ele {
+        height: 50px;
+        width: 220px;
+        font-size: 15px;
+    }
 
-	.clkbtn {
-		height: 50px;
-		width: 130px;
-		font-size: 19px;
-	}
+    .clkbtn {
+        height: 50px;
+        width: 130px;
+        font-size: 19px;
+    }
 }

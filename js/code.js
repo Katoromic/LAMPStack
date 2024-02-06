@@ -1,5 +1,5 @@
-const urlBase = '138.197.67.189';
-const extension = 'php';
+const urlBase = "138.197.67.189";
+const extension = "php";
 
 let userId = 0;
 let firstName = "";
@@ -24,13 +24,13 @@ function doLogin()
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
-	let jsonPayload = JSON.stringify( tmp );
-	console.log("jsonPayload= " + jsonPayload);
-	
-	let url = 'http://' + urlBase + '/LAMPAPI/Login.' + extension;
-	//let url = '/var/www/html/LAMPAPI/Login.' + extension;
+  let tmp = { login: login, password: password };
+  //	var tmp = {login:login,password:hash};
+  let jsonPayload = JSON.stringify(tmp);
+  console.log("jsonPayload= " + jsonPayload);
+
+  let url = "http://" + urlBase + "/LAMPAPI/Login." + extension;
+  //let url = '/var/www/html/LAMPAPI/Login.' + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -80,44 +80,49 @@ function doRegister()
 	let login = document.getElementById("registerLogin").value;
 	let password = document.getElementById("registerPassword").value;
 
-	if (firstName === "")
-	{
-		document.getElementById("registerFirstName").className = "ele required";
-		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
-		return;
-	}
-	if (lastName === "")
-	{
-		document.getElementById("registerLastName").className = "ele required";
-		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
-		return;
-	}
-	if (login === "")
-	{
-		document.getElementById("registerLogin").className = "ele required";
-		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
-		return;
-	}
-	if (password === "")
-	{
-		document.getElementById("registerPassword").className = "ele required";
-		document.getElementById("registerResult").innerHTML = "Please fill out all fields";
-		return;
-	}
-	
+  if (firstName === "") {
+    document.getElementById("registerFirstName").className = "ele required";
+    document.getElementById("registerResult").innerHTML =
+      "Please fill out all fields";
+    return;
+  }
+  if (lastName === "") {
+    document.getElementById("registerLastName").className = "ele required";
+    document.getElementById("registerResult").innerHTML =
+      "Please fill out all fields";
+    return;
+  }
+  if (login === "") {
+    document.getElementById("registerLogin").className = "ele required";
+    document.getElementById("registerResult").innerHTML =
+      "Please fill out all fields";
+    return;
+  }
+  if (password === "") {
+    document.getElementById("registerPassword").className = "ele required";
+    document.getElementById("registerResult").innerHTML =
+      "Please fill out all fields";
+    return;
+  }
 
-	// resets fields
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.getElementById("registerResult").innerHTML = "";
+  // create json payload
+  let tmp = {
+    login: login,
+    password: password,
+    firstName: firstName,
+    lastName: lastName,
+  };
 
-	// create json payload
-	let tmp = {login:login,password:password,firstName:firstName,lastName:lastName};
-	let jsonPayload = JSON.stringify( tmp );
-	console.log("jsonPayload= " + jsonPayload);
-	
-	let url = 'http://' + urlBase + '/LAMPAPI/Register.' + extension;
+  // resets fields
+  userId = 0;
+  firstName = "";
+  lastName = "";
+  document.getElementById("registerResult").innerHTML = "";
+
+  let jsonPayload = JSON.stringify(tmp);
+  console.log("jsonPayload= " + jsonPayload);
+
+  let url = "http://" + urlBase + "/LAMPAPI/Register." + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);

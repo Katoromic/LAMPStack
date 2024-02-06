@@ -1,5 +1,5 @@
-let signup = document.querySelector(".color");
-let login = document.querySelector(".contacts");
+let contacts = document.querySelector(".contacts");
+let viewer = document.querySelector(".color");
 let slider = document.querySelector(".slider");
 let formSection = document.querySelector(".form-section");
 
