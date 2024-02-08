@@ -1,4 +1,5 @@
-const urlBase = "138.197.67.189";
+//const urlBase = "138.197.67.189";
+const urlBase = "chompersphonebook.xyz";
 const extension = "php";
 
 var userId = 0;
@@ -7,8 +8,6 @@ let userLastName = "";
 
 let contactSearchList = [];
 let contactList = [];
-let letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-				"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
 
 function doLogin()
 {
@@ -37,15 +36,18 @@ function doLogin()
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function() 
+		xhr.onreadystatechange = async function() 
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
+				userFirstName = jsonObject.firstName;
+				userLastName = jsonObject.lastName;
 				sessionStorage.setItem('userId', userId);
-				sessionStorage.setItem('contactList', contactList);
-				sessionStorage.setItem('letters', letters);
+				sessionStorage.setItem('userFirstName', userFirstName);
+				sessionStorage.setItem('userLastName', userLastName);
+
 		
 				if( userId < 1 )
 				{		
@@ -53,9 +55,12 @@ function doLogin()
 					return;
 				}
 		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
+				
 				saveCookie();
+				const getContactsResult = await getContacts("");
+				console.log(getContactsResult);
+				//let contacts = JSON.stringify(contactList);
+				//sessionStorage.setItem('contactList', contacts);
 				window.location.href = "landing.html";
 				console.log("cookie on landing= " + document.cookie);
 			}
@@ -201,7 +206,6 @@ function doRegister()
 
 function addContact()
 {
-	console.log("cookie in addcontact= " + document.cookie);
 	//readCookie();
 	userId = sessionStorage.getItem('userId');
 	console.log("UserId in addContact:", userId);
@@ -222,14 +226,16 @@ function addContact()
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function() 
+		xhr.onreadystatechange = async function() 
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				console.log("contact has been added");
 				//document.getElementById("contactAddResult").innerHTML = "Contact has been added";
-				alert("Contact has been added");
-				displayContacts();
+				alert("Contact has been added successfully");
+				const getContactsResult = await getContacts("");
+				console.log(getContactsResult);
+				loadContacts(6);
 			}
 		};
 		xhr.send(jsonPayload);
@@ -244,7 +250,7 @@ function addContact()
 
 // edit contact functions
 
-function editContactClicked(id)
+async function editContactClicked(id)
 {
 	userId = sessionStorage.getItem('userId');
 	let firstName = document.getElementById("contactFirst").value;
@@ -255,30 +261,38 @@ function editContactClicked(id)
 	if (firstName !== "") {
 		let tmp = {contactId:id,fieldToUpdate:"FirstName",newValue:firstName,userId:userId};
 		let jsonPayload = JSON.stringify( tmp );
-		editContact(jsonPayload);
+		const editContactResult = await editContact(jsonPayload);
+		console.log(editContactResult);
 	  }
 	if (lastName !== "") {
 		let tmp = {contactId:id,fieldToUpdate:"LastName",newValue:lastName,userId:userId};
 		let jsonPayload = JSON.stringify( tmp );
-		editContact(jsonPayload);
+		const editContactResult = await editContact(jsonPayload);
+		console.log(editContactResult);
 	  }
 	  if (phone !== "") {
 		let tmp = {contactId:id,fieldToUpdate:"Phone",newValue:phone,userId:userId};
 		let jsonPayload = JSON.stringify( tmp );
-		editContact(jsonPayload);
+		const editContactResult = await editContact(jsonPayload);
+		console.log(editContactResult);
 	  }
 	  if (email !== "") {
 		let tmp = {contactId:id,fieldToUpdate:"Email",newValue:email,userId:userId};
 		let jsonPayload = JSON.stringify( tmp );
-		editContact(jsonPayload);
+		const editContactResult = await editContact(jsonPayload);
+		console.log(editContactResult);
 	  }
 
-	  alert("Contact portion has been edited successfully");
-	  displayContacts();
+	  alert("Contact has been edited successfully");
+	  clearContactList();
+	  const getContactsResult = await getContacts("");
+	  console.log(getContactsResult);
+		location.reload();
 }
 
 function editContact(payLoad)
 {
+	return new Promise((resolve, reject) => {
 	console.log("jsonPayload= " + payLoad);
 
 	let url = 'http://' + urlBase + '/LAMPAPI/EditContact.' + extension;
@@ -292,9 +306,7 @@ function editContact(payLoad)
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				displayContacts();
-				//document.getElementById("contactEditResult").innerHTML = "Contact has been edited successfully";
-				alert("Contact has been edited successfully");
+				resolve("edited contact portion successfully");
 			}
 		};
 		xhr.send(payLoad);
@@ -303,11 +315,16 @@ function editContact(payLoad)
 	{
 		document.getElementById("contactEditResult").innerHTML = err.message;
 	}
+});
 }
 
 // delete contact function
 function deleteContact(id)
 {
+	if (!confirm("Are you sure you want to delete contact?"))
+	{
+		return;
+	}
 	userId = sessionStorage.getItem('userId');
 	let tmp = {contactId:String(id),userId:userId};
 
@@ -320,13 +337,18 @@ function deleteContact(id)
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     try {
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = async function () {
             if (this.readyState == 4 && this.status == 200) {
                 let deleteResult = JSON.parse(xhr.responseText);
 
                 if (!(deleteResult.error)) {
-                    alert("Contact deleted successfully!");
-                    displayContacts();
+                    //alert("Contact deleted successfully!");
+                    const getContactsResult = await getContacts("");
+					console.log(getContactsResult);
+					//clearContactList();
+					//currentIndex = 0;
+					clearContactList();
+					location.reload();
                 }
             }
         };
@@ -352,7 +374,7 @@ function searchContactClicked()
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     try {
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = async function () {
             if (this.readyState == 4 && this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
 				jsonObject = JSON.parse(jsonObject);
@@ -360,21 +382,13 @@ function searchContactClicked()
                     console.log(jsonObject.error);
                     return;
                 }
-                let text = "<table border='1'>"
-				//const contactArray = jsonObject.contacts;
-                for (let i = 0; i < jsonObject.contacts.length; i++) {
-                    text += "<tr id='row-" + i + "'>";
-                    text += "<td id='first-name-" + i + "'><span>" + jsonObject.contacts[i].FirstName + "</span></td>";
-                    text += "<td id='last-name-" + i + "'><span>" + jsonObject.contacts[i].LastName + "</span></td>";
-                    text += "<td id='email-" + i + "'><span>" + jsonObject.contacts[i].Email + "</span></td>";
-                    text += "<td id='phone-" + i + "'><span>" + jsonObject.contacts[i].Phone + "</span></td>";
-                    text += "<td><button onclick='deleteContact(" + jsonObject.contacts[i].ID + ")'>Delete</button></td>";
-                    text += "<td><button onclick=' editContactClicked(" + jsonObject.contacts[i].ID + ")'>Edit</button></td>";
-                    text += "<tr/>"
-                }
-
-                text += "</table>"
-                document.getElementById("table-body").innerHTML = text;
+                //let text = "<table border='1'>"
+				// get contacts with new param
+				console.log("searched for " + searchValue);
+                const getContactsResult = await getContacts(searchValue);
+				console.log(getContactsResult);
+				clearContactList();
+				location.reload();
             }
         };
         xhr.send(jsonPayload);
@@ -383,15 +397,30 @@ function searchContactClicked()
     }
 }
 
-function displayContacts() {
+function doLogout()
+{
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	window.location.href = "index.html";
+}
+
+function goAbout()
+{
+	window.location.href = "about.html";
+}
+
+// pull all contacts into an array to display
+function getContacts(param) {
+	return new Promise((resolve, reject) => {
 	userId = sessionStorage.getItem('userId');
-	contactList = sessionStorage.getItem('contactList');
+	console.log("gatheirng " + userId);
 
-	let tmp = {searchParam:"",userId:userId};
+	let tmp = {searchParam:param,userId:userId};
+	let jsonPayload = JSON.stringify(tmp);
 
-    let jsonPayload = JSON.stringify(tmp);
-
-    let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
+	let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -402,73 +431,33 @@ function displayContacts() {
                 let jsonObject = JSON.parse(xhr.responseText);
 				jsonObject = JSON.parse(jsonObject);
                 if (jsonObject.error) {
+					let contacts = [];
+					sessionStorage.setItem('contactList', contacts);
+					resolve("no contacts found");
                     console.log(jsonObject.error);
                     return;
                 }
-                let text = "<table border='1'>"
 				//const contactArray = jsonObject.contacts;
-                for (let i = 0; i < jsonObject.contacts.length; i++) {
-                    text += "<tr id='row-" + i + "'>";
-                    text += "<td id='first-name-" + i + "'><span>" + jsonObject.contacts[i].FirstName + "</span></td>";
-                    text += "<td id='last-name-" + i + "'><span>" + jsonObject.contacts[i].LastName + "</span></td>";
-                    text += "<td id='email-" + i + "'><span>" + jsonObject.contacts[i].Email + "</span></td>";
-                    text += "<td id='phone-" + i + "'><span>" + jsonObject.contacts[i].Phone + "</span></td>";
-                    text += "<td><button onclick='deleteContact(" + jsonObject.contacts[i].ID + ")'>Delete</button></td>";
-                    text += "<td><button onclick=' editContactClicked(" + jsonObject.contacts[i].ID + ")'>Edit</button></td>";
-                    text += "<tr/>"
-                }
-
-                text += "</table>"
-                document.getElementById("table-body").innerHTML = text;
+				contactList = jsonObject.contacts;
+				let contacts = JSON.stringify(contactList);
+				sessionStorage.setItem('contactList', contacts);
+				console.log("got contacts" + contactList);
+				resolve("resolved contactList");
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
+		//resolve(err.message);
         console.log(err.message);
     }
+});
 }
 
-// change function to searchContact
-function searchContact1(payLoad)
+function showName()
 {
-	console.log("jsonPayload= " + payLoad);
-
-	let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				console.log("contact has been found");
-				let jsonObject = JSON.parse( xhr.responseText );
-				jsonObject = JSON.parse( jsonObject );
-				
-				for( let i=0; i<jsonObject.contacts.length; i++ )
-				{
-					contactSearchList += jsonObject.contacts[i];
-				}
-			}
-		};
-		xhr.send(payLoad);
-	}
-	catch(err)
-	{
-		//document.getElementById("contactSearchResult").innerHTML = err.message;
-		console.log(err.message);
-	}
-	
-}
-
-function doLogout()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
+	userId = sessionStorage.getItem('userId');
+	userFirstName = sessionStorage.getItem('userFirstName');
+	userLastName = sessionStorage.getItem('userLastName');
+	console.log("loading name " + userFirstName + " " + userLastName);
+	document.getElementById("title").innerHTML = "Welcome to Chomper's Phone Book, " + userFirstName + " " + userLastName;
 }
