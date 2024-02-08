@@ -136,6 +136,19 @@ header {
 	border: #ff0000 solid 5px;
 }
 
+.registerResult{
+    display: inline-block;
+    font-size: 30px;
+    width: 90%;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    color: #ff0008;
+}
+
+.required::placeholder {
+	color: #ff0000;
+}
+
 .clkbtn {
 	height: 60px;
 	width: 150px;

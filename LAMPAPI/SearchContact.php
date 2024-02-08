@@ -2,16 +2,23 @@
     $inData = getRequestInfo();
 
     $searchParam = $inData["searchParam"];
-    $searchField = $inData["searchField"];
+    $userId = $inData["userId"];
 
     $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331"); 
     if ($conn->connect_error) {
         returnWithError($conn->connect_error);
     } else {
-        // Search for contacts based on the specified parameter and field
-        $stmt = $conn->prepare("SELECT * FROM Contacts WHERE $searchField LIKE ?");
-        $searchParam = "%$searchParam%";
-        $stmt->bind_param("s", $searchParam);
+        if (empty($searchParam)) {
+            // If searchParam is empty, return all contacts for the given user ID
+            $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ?");
+            $stmt->bind_param("i", $userId);
+        } else {
+            // If searchParam is not empty, perform the search on all fields
+            $stmt = $conn->prepare("SELECT * FROM Contacts WHERE UserID = ? AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ?)");
+            $searchParam = "%$searchParam%";
+            $stmt->bind_param("issss", $userId, $searchParam, $searchParam, $searchParam, $searchParam);
+        }
+
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -25,7 +32,7 @@
 
             returnWithInfo($contacts);
         } else {
-            returnWithError("No contacts found matching the specified parameter");
+            returnWithError("No contacts found for the given user ID");
         }
 
         $stmt->close();
@@ -51,5 +58,3 @@
         sendResultInfoAsJson($retValue);
     }
 ?>
-
-

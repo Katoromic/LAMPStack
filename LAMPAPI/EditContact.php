@@ -4,20 +4,21 @@
     $contactId = $inData["contactId"];
     $fieldToUpdate = $inData["fieldToUpdate"];
     $newValue = $inData["newValue"];
+    $userId = $inData["userId"];
 
     $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331"); 
     if ($conn->connect_error) {
         returnWithError($conn->connect_error);
     } else {
-        // Update contact field by ID
-        $stmt = $conn->prepare("UPDATE Contacts SET $fieldToUpdate = ? WHERE ID = ?");
-        $stmt->bind_param("si", $newValue, $contactId);
+        // Update contact field by ID and UserID
+        $stmt = $conn->prepare("UPDATE Contacts SET $fieldToUpdate = ? WHERE ID = ? AND UserID = ?");
+        $stmt->bind_param("sii", $newValue, $contactId, $userId);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
             returnWithInfo("Contact updated successfully");
         } else {
-            returnWithError("No contact found with the specified ID");
+            returnWithError("No contact found with the specified ID for the given user ID");
         }
 
         $stmt->close();
