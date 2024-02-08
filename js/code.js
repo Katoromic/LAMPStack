@@ -189,7 +189,7 @@ function doRegister()
 				if( userId < 1 )
 				{
 					let err = jsonObject.error;
-					document.getElementById("loginResult").innerHTML = err;
+					document.getElementById("registerResult").innerHTML = err;
 					return;
 				}
 	
