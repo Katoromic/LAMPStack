@@ -14,33 +14,39 @@
     
     
     <!-- container div -->
-    <div class="container">
+    
         <header>
         </header>
 
             <!-- upper button section to select
 			the contacts or color form -->
-        <div class="slider"></div>
-        <div class="btn">
-            <button class="color">Color</button>
-            <button class="contacts">Contacts</button>
-        </div>
-
+    
             <!-- Form section that contains the
 			color and the contacts form -->
         <div class="form-section">
             <!-- color form -->
-            <div class="color-box">
-                <p class="color ele">List</p>
-                <input type="text" class="color ele" placeholder="Enter color" />
                 <div class="button-container">
-                    <button class="buttons" id="addColor">Add</button>
-                    <button class="buttons" id="searchColor">Seach</button>
-                    <button class="buttons" id="deleteColor">Delete</button>
-                </div>
+                    <div class="table">
+                        <div class="table-content" id="contact-table">
+                            <h2 class="view-title" id="welcome"></h2>
+                            <table id="contacts">
+                                <thead>
+                                    <tr>
+                                        <th>FIRST NAME</th>
+                                        <th>LAST NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>PHONE</th>
+                                        <th>DELETE</th>
+                                        <th>EDIT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
 
             </div>
-            <!-- contacts form -->
+            <!-- add/edit form -->
             <div class="contacts-box">
                 <span id="contactAddResult"></span>
                 <input id="contactFirst" type="text" class="name ele" placeholder="Enter first name" />
@@ -49,17 +55,21 @@
                 <input id="contactPhone" type="text" class="password ele" placeholder="Enter phone number" />
                 <div class="button-container">
                     <button onclick="addContact()" class="buttons" id="addContacts">Add</button>
-                    <button class="buttons" id="searchContacts">Search</button>
-                    <button class="buttons" id="deleteContacts">Delete</button>
+                </div>
+            </div>
+
+            <!-- search form -->
+            <div class="contacts-box">
+                <input id="searchValue" type="text" class=" ele" placeholder="Search" />
+                <div class="button-container">
+                    <button onclick="searchContactClicked()"class="buttons" id="searchContacts">Search</button>
                 </div>
             </div>
 
         </div>
-    </div>
 
 
     <script src="js/landing.js"></script>
-    <script src="js/code.js"></script>
 </body>
 
 </html>

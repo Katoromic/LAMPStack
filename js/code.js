@@ -1,9 +1,9 @@
 const urlBase = "138.197.67.189";
 const extension = "php";
 
-let userId = 0;
-let firstName = "";
-let lastName = "";
+var userId = 0;
+let userFirstName = "";
+let userLastName = "";
 
 let contactSearchList = [];
 let contactList = [];
@@ -43,6 +43,9 @@ function doLogin()
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
+				sessionStorage.setItem('userId', userId);
+				sessionStorage.setItem('contactList', contactList);
+				sessionStorage.setItem('letters', letters);
 		
 				if( userId < 1 )
 				{		
@@ -52,9 +55,9 @@ function doLogin()
 		
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
-				userId = jsonObject.id;
-	
+				saveCookie();
 				window.location.href = "landing.html";
+				console.log("cookie on landing= " + document.cookie);
 			}
 		};
 		xhr.send(jsonPayload);
@@ -64,6 +67,48 @@ function doLogin()
 		document.getElementById("loginResult").innerHTML = err.message;
 	}
 
+}
+
+function saveCookie()
+{
+	let minutes = 500;
+	let date = new Date();
+	date.setTime(date.getTime()+(minutes*60*1000));	
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	console.log("cookie= " + document.cookie);
+}
+
+function readCookie()
+{
+	userId = -1;
+	let data = document.cookie;
+	let splits = data.split(",");
+	for(var i = 0; i < splits.length; i++) 
+	{
+		let thisOne = splits[i].trim();
+		let tokens = thisOne.split("=");
+		if( tokens[0] == "firstName" )
+		{
+			firstName = tokens[1];
+		}
+		else if( tokens[0] == "lastName" )
+		{
+			lastName = tokens[1];
+		}
+		else if( tokens[0] == "userId" )
+		{
+			userId = parseInt( tokens[1].trim() );
+		}
+	}
+	
+	if( userId < 0 )
+	{
+		window.location.href = "index.html";
+	}
+	else
+	{
+		//document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+	}
 }
 
 function doRegister()
@@ -154,34 +199,19 @@ function doRegister()
 	}
 }
 
-// display contacts
-
-function displayContacts()
-{
-	// get all contacts A-Z
-	for (let i=0; i<letters.length; i++)
-	{
-		searchContact(letters[i], "firstName", contactList);
-	}
-
-	// display loop
-	let displayBox = document.getElementsByTagName("p")[0].innerHTML;
-	for (let i=0; i<contactList.length; i++)
-	{
-		displayBox.innerHTML += contactList[i].firstName + " " + contactList[i].lastName + 
-								contactList[i].phone + " " + contactList[i].email + "<br>";
-	}
-}
-
 function addContact()
 {
+	console.log("cookie in addcontact= " + document.cookie);
+	//readCookie();
+	userId = sessionStorage.getItem('userId');
+	console.log("UserId in addContact:", userId);
 	let firstName = document.getElementById("contactFirst").value;
 	let lastName = document.getElementById("contactLast").value;
 	let phone = document.getElementById("contactPhone").value;
 	let email = document.getElementById("contactEmail").value;
 	//document.getElementById("contactAddResult").innerHTML = "";
 
-	let tmp = {firstName:firstName,lastName:lastName,phone:phone,email:email,userId:userId};
+	let tmp = {firstName:firstName,lastName:lastName,phone:phone,email:email,userid:userId};
 	let jsonPayload = JSON.stringify( tmp );
 	console.log("jsonPayload= " + jsonPayload);
 
@@ -198,6 +228,8 @@ function addContact()
 			{
 				console.log("contact has been added");
 				//document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+				alert("Contact has been added");
+				displayContacts();
 			}
 		};
 		xhr.send(jsonPayload);
@@ -212,15 +244,42 @@ function addContact()
 
 // edit contact functions
 
-function editContact(id)
+function editContactClicked(id)
 {
-	let field = document.getElementById("field").value;
-	let newValue = document.getElementById("newValue").value;
-	document.getElementById("contactEditResult").innerHTML = "";
+	userId = sessionStorage.getItem('userId');
+	let firstName = document.getElementById("contactFirst").value;
+	let lastName = document.getElementById("contactLast").value;
+	let phone = document.getElementById("contactPhone").value;
+	let email = document.getElementById("contactEmail").value;
 
-	let tmp = {contactId:id,fieldToUpdate:field,newValue:newValue};
-	let jsonPayload = JSON.stringify( tmp );
-	console.log("jsonPayload= " + jsonPayload);
+	if (firstName !== "") {
+		let tmp = {contactId:id,fieldToUpdate:"FirstName",newValue:firstName,userId:userId};
+		let jsonPayload = JSON.stringify( tmp );
+		editContact(jsonPayload);
+	  }
+	if (lastName !== "") {
+		let tmp = {contactId:id,fieldToUpdate:"LastName",newValue:lastName,userId:userId};
+		let jsonPayload = JSON.stringify( tmp );
+		editContact(jsonPayload);
+	  }
+	  if (phone !== "") {
+		let tmp = {contactId:id,fieldToUpdate:"Phone",newValue:phone,userId:userId};
+		let jsonPayload = JSON.stringify( tmp );
+		editContact(jsonPayload);
+	  }
+	  if (email !== "") {
+		let tmp = {contactId:id,fieldToUpdate:"Email",newValue:email,userId:userId};
+		let jsonPayload = JSON.stringify( tmp );
+		editContact(jsonPayload);
+	  }
+
+	  alert("Contact portion has been edited successfully");
+	  displayContacts();
+}
+
+function editContact(payLoad)
+{
+	console.log("jsonPayload= " + payLoad);
 
 	let url = 'http://' + urlBase + '/LAMPAPI/EditContact.' + extension;
 	
@@ -234,10 +293,11 @@ function editContact(id)
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				displayContacts();
-				document.getElementById("contactEditResult").innerHTML = "Contact has been edited successfully";
+				//document.getElementById("contactEditResult").innerHTML = "Contact has been edited successfully";
+				alert("Contact has been edited successfully");
 			}
 		};
-		xhr.send(jsonPayload);
+		xhr.send(payLoad);
 	}
 	catch(err)
 	{
@@ -246,53 +306,134 @@ function editContact(id)
 }
 
 // delete contact function
+function deleteContact(id)
+{
+	userId = sessionStorage.getItem('userId');
+	let tmp = {contactId:String(id),userId:userId};
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = 'http://' + urlBase + '/LAMPAPI/DeleteContact.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let deleteResult = JSON.parse(xhr.responseText);
+
+                if (!(deleteResult.error)) {
+                    alert("Contact deleted successfully!");
+                    displayContacts();
+                }
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.error("Delete contact failed: " + err.message);
+    }
+}
 
 function searchContactClicked()
 {
-	let field = document.getElementById("searchText").value;
-	// collect values from form
-	let searchFirstName = document.getElementById("searchFirstName").value;
-	let searchLastName = document.getElementById("searchLastName").value;
-	let searchEmail = document.getElementById("searchEmail").value;
-	let searchPhone = document.getElementById("searchPhone").value;
+	userId = sessionStorage.getItem('userId');
+	let searchValue = document.getElementById("searchValue").value;
 
-	if (searchFirstName !== "")
-	{
-		searchContact(searchFirstName, "FirstName", contactSearchList);
-	}
-	if (searchLastName !== "")
-	{
-		searchContact(searchLastName, "LastName", contactSearchList);
-	}
-	if (searchEmail !== "")
-	{
-		searchContact(searchEmail, "Email", contactSearchList);
-	}
-	if (searchPhone !== "")
-	{
-		searchContact(searchPhone, "Phone", contactSearchList);
-	}
+	let tmp = {searchParam:searchValue,userId:userId};
 
-	// display loop
-	let displayBox = document.getElementsByTagName("p")[0].innerHTML;
-	for (let i=0; i<contactSearchList.length; i++)
-	{
-		displayBox.innerHTML += contactSearchList[i].firstName + " " + contactSearchList[i].lastName + 
-								contactSearchList[i].phone + " " + contactSearchList[i].email + "<br>";
-	}
-	
+    let jsonPayload = JSON.stringify(tmp);
 
+    let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+				jsonObject = JSON.parse(jsonObject);
+                if (jsonObject.error) {
+                    console.log(jsonObject.error);
+                    return;
+                }
+                let text = "<table border='1'>"
+				//const contactArray = jsonObject.contacts;
+                for (let i = 0; i < jsonObject.contacts.length; i++) {
+                    text += "<tr id='row-" + i + "'>";
+                    text += "<td id='first-name-" + i + "'><span>" + jsonObject.contacts[i].FirstName + "</span></td>";
+                    text += "<td id='last-name-" + i + "'><span>" + jsonObject.contacts[i].LastName + "</span></td>";
+                    text += "<td id='email-" + i + "'><span>" + jsonObject.contacts[i].Email + "</span></td>";
+                    text += "<td id='phone-" + i + "'><span>" + jsonObject.contacts[i].Phone + "</span></td>";
+                    text += "<td><button onclick='deleteContact(" + jsonObject.contacts[i].ID + ")'>Delete</button></td>";
+                    text += "<td><button onclick=' editContactClicked(" + jsonObject.contacts[i].ID + ")'>Edit</button></td>";
+                    text += "<tr/>"
+                }
+
+                text += "</table>"
+                document.getElementById("table-body").innerHTML = text;
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+function displayContacts() {
+	userId = sessionStorage.getItem('userId');
+	contactList = sessionStorage.getItem('contactList');
+
+	let tmp = {searchParam:"",userId:userId};
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+				jsonObject = JSON.parse(jsonObject);
+                if (jsonObject.error) {
+                    console.log(jsonObject.error);
+                    return;
+                }
+                let text = "<table border='1'>"
+				//const contactArray = jsonObject.contacts;
+                for (let i = 0; i < jsonObject.contacts.length; i++) {
+                    text += "<tr id='row-" + i + "'>";
+                    text += "<td id='first-name-" + i + "'><span>" + jsonObject.contacts[i].FirstName + "</span></td>";
+                    text += "<td id='last-name-" + i + "'><span>" + jsonObject.contacts[i].LastName + "</span></td>";
+                    text += "<td id='email-" + i + "'><span>" + jsonObject.contacts[i].Email + "</span></td>";
+                    text += "<td id='phone-" + i + "'><span>" + jsonObject.contacts[i].Phone + "</span></td>";
+                    text += "<td><button onclick='deleteContact(" + jsonObject.contacts[i].ID + ")'>Delete</button></td>";
+                    text += "<td><button onclick=' editContactClicked(" + jsonObject.contacts[i].ID + ")'>Edit</button></td>";
+                    text += "<tr/>"
+                }
+
+                text += "</table>"
+                document.getElementById("table-body").innerHTML = text;
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        console.log(err.message);
+    }
 }
 
 // change function to searchContact
-function searchContact(param, field, list)
+function searchContact1(payLoad)
 {
-	//document.getElementById("contactSearchResult").innerHTML = "";
+	console.log("jsonPayload= " + payLoad);
 
-	let tmp = {searchParam:param,searchField:field};
-	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/LAMPAPI/SearchContact.' + extension;
+	let url = 'http://' + urlBase + '/LAMPAPI/SearchContact.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -303,20 +444,31 @@ function searchContact(param, field, list)
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
+				console.log("contact has been found");
 				let jsonObject = JSON.parse( xhr.responseText );
+				jsonObject = JSON.parse( jsonObject );
 				
-				for( let i=0; i<jsonObject.results.length; i++ )
+				for( let i=0; i<jsonObject.contacts.length; i++ )
 				{
-					list += jsonObject.contacts[i];
+					contactSearchList += jsonObject.contacts[i];
 				}
 			}
 		};
-		xhr.send(jsonPayload);
+		xhr.send(payLoad);
 	}
 	catch(err)
 	{
-		document.getElementById("contactSearchResult").innerHTML = err.message;
+		//document.getElementById("contactSearchResult").innerHTML = err.message;
+		console.log(err.message);
 	}
 	
+}
+
+function doLogout()
+{
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	window.location.href = "index.html";
 }

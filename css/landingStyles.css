@@ -130,6 +130,31 @@ header {
 	cursor: pointer;
 }
 
+
+#contacts {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DMSans-Regular', sans-serif;
+}
+
+.table-content {
+    overflow-x: auto;
+    font-family: 'DMSans-Regular', sans-serif;
+}
+
+#table-body {
+    text-align: center; /* Center the text in the table body */
+    font-family: 'DMSans-Regular', sans-serif;
+}
+
+.table {
+    flex: 1; /* Fill remaining space */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 400px;
+    font-family: 'DMSans-Regular', sans-serif;
+}
+
 .slider {
     height: 60px;
     width: 150px;
