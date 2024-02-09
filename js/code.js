@@ -189,7 +189,7 @@ function doRegister()
 				if( userId < 1 )
 				{
 					let err = jsonObject.error;
-					document.getElementById("loginResult").innerHTML = err;
+					document.getElementById("registerResult").innerHTML = err;
 					return;
 				}
 	
@@ -236,6 +236,7 @@ function addContact()
 				const getContactsResult = await getContacts("");
 				console.log(getContactsResult);
 				loadContacts(6);
+				window.location.reload();
 			}
 		};
 		xhr.send(jsonPayload);
