@@ -13,9 +13,14 @@ body {
     backdrop-filter: blur(10px);
     overflow:hidden;
 }
+.b-container {
+    width:40%;
+    height: 100px;
+    padding-right:50%;
+}
 .container {
     height: auto;
-    width: 1200px;
+    width: 80%;
     background-color: #06255f4b;
     border: #ffffff solid 5px;
     border-radius: 20px; 
@@ -24,7 +29,7 @@ body {
     /* overflow: hidden; */
     overflow-x: auto;
     margin-bottom: 20px;
-    margin-top:40px;
+    /* margin-top:40px; */
 }
 .title {
     font-weight: 400;
@@ -105,4 +110,21 @@ body {
     font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+.clkbtn {
+	height: 60px;
+	width: 150px;
+	border-radius: 50px;
+	background-color: rgb(188, 209, 255);
+	font-size: 22px;
+	border: none;
+	cursor: pointer;
+    margin-top: 40px;
+    /* margin-right:200px; */
+}
+
+.clkbtn:hover {
+    background-color: #020f2980;
+    color: white;
 }

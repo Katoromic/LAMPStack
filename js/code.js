@@ -236,6 +236,7 @@ function addContact()
 				const getContactsResult = await getContacts("");
 				console.log(getContactsResult);
 				loadContacts(6);
+				window.location.reload();
 			}
 		};
 		xhr.send(jsonPayload);
